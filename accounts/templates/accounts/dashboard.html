@@ -1,0 +1,222 @@
+{% extends 'accounts/main.html' %}
+{% block content %}
+{% load static %}
+<style>
+    body,
+    html {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        background: gray !important;
+        font-family: 'Kalam', cursive;
+    }
+
+    body {
+        overflow: hidden;
+    }
+
+    .landing {
+        color: #1b0000;
+        font-family: 'Kalam', cursive;
+        padding-top: 25px;
+        padding-left: 25px;
+    }
+
+    .container-validate {
+        height: calc(100vh);
+        width: 100%;
+        background: #1b0000;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+
+    }
+
+    .container-validate p {
+        font-family: Arial, Helvetica, sans-serif !important;
+    }
+
+    .password-input-box {
+        width: 400px;
+        max-width: 90%;
+        position: relative;
+    }
+
+    ::placeholder{
+        color: #b0bec5;
+    }
+
+    .password-input-box input {
+        border: 1px solid #ccc;
+        outline: none;
+        padding: 0 20px;
+        height: 60px;
+        width: 100%;
+        color: #fff;
+        background: transparent;
+    }
+
+    button {
+        border: 0;
+        outline: none;
+        margin-top: 10px;
+    }
+
+    #strength-message {
+        margin-top: 10px;
+        color: #fff;
+        font-size: 15px;
+        display: none;
+    }
+
+    .description {
+        color: white;
+    }
+
+    .swal-button {
+        padding: 7px 19px;
+        border-radius: 2px;
+        background-color: #1b0000;
+        font-size: 12px;
+        border: 1px solid #fff;
+        text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.3);
+    }
+
+    .swal-title {
+        font-family: Arial, Helvetica, sans-serif;
+        margin: 0px;
+        font-size: 16px;
+        box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.21);
+        margin-bottom: 28px;
+    }
+
+    .swal-text {
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+</style>
+
+</div>
+<div class="container-validate">
+    <h1 style="color: white;">Welcome, {{request.user}}.<br>
+        Here you can use the Password Strength Checker.</h1>
+    <p style="color: white; ">Enter a password to test the strength. </p>
+    <form class="password-input-box">
+        <input type="password" id="password" placeholder="enter password">
+        <p id="strength-message">Password <span id="actual-strength"></span></p>
+        <progress max="100" value="0" id="progress-strength" style="width: 230px"></progress>
+        <button type="reset" id="btn" onclick="clearFunction()">Reset</button>
+        <button type="reset" id="btn2" onclick="showStats()">Show stats</button>
+    </form>
+</div>
+
+<script>
+    var currentUser = "{{request.user}}";
+    var inputPass = document.getElementById("password");
+    var message = document.getElementById("strength-message");
+    var strengthMessage = document.getElementById("actual-strength");
+
+    // Regex
+    let hasOneLowerCase = new RegExp('(?=.*[a-z])');
+    let hasOneUpperCase = new RegExp('(?=.*[A-Z])');
+    let hasOneNumeric = new RegExp('(?=.*[0-9])');
+    let hasOneSpecialChar = new RegExp('(?=.*[!@#$%^&*])');
+    let isEightCharsLong = new RegExp('(?=.{8,})');
+
+    // Confetti effect if password is secure
+    function party() {
+        confetti()
+    }
+
+    // Resets all visuals to default
+    function clearFunction() {
+        var progressStrength = document.getElementById("progress-strength");
+        message.style.display = "none";
+        progressStrength.value = 0;
+        inputPass.style.borderColor = "#fff";
+    }
+
+    // Show password statistics
+    function showStats() {
+        var passwordStats = zxcvbn(inputPass.value)
+            swal({
+            title: "Showing stats for your password!",
+            text: "Password score (0-4): " + passwordStats.score
+                + "\nFeedback: " + passwordStats.feedback.warning
+                + "\nSuggestions: " + passwordStats.feedback.suggestions
+                + "\n"
+                + "\n(Feedback and Suggestion will not be always available)"
+        })
+    }
+
+    // Actively checks the password and provide feedback on every key press by user
+    inputPass.addEventListener('keyup', function () {
+        checkPassword(inputPass.value)
+    })
+
+    // Checks password if it meets regex requirements and increases strength
+    function checkPassword(password) {
+        var progressStrength = document.getElementById("progress-strength");
+        var strength = 0;
+        if (hasOneLowerCase.test(password)) {
+            strength += 1;
+        }
+        if (hasOneUpperCase.test(password)) {
+            strength += 1;
+        }
+        if (hasOneNumeric.test(password)) {
+            strength += 1;
+        }
+        if (hasOneSpecialChar.test(password)) {
+            strength += 1;
+        }
+        if (isEightCharsLong.test(password)) {
+            strength += 1;
+        }
+
+        switch (strength) {
+            // Resets strength meter 0%
+            case 0:
+                progressStrength.value = 0;
+                break
+            // Increase stregth meter to 10%
+            case 1:
+                progressStrength.value = 10;
+                strengthMessage.innerHTML = "is too weak. See stats for improvements.";
+                inputPass.style.borderColor = "#ff0000";
+                message.style.color = "#ff0000";
+                message.style.display = "block";
+                break
+            // Increase stregth meter to 30%
+            case 2:
+                progressStrength.value = 30;
+                break
+            // Increase stregth meter to 50%
+            case 3:
+                progressStrength.value = 50;
+                strengthMessage.innerHTML = "has medium strength. See stats for improvements.";
+                inputPass.style.borderColor = "#ffff00";
+                message.style.color = "#ffff00";
+                message.style.display = "block";
+                break
+            // Increase stregth meter to 70%
+            case 4:
+                progressStrength.value = 70;
+                break
+            // Increase stregth meter to 100%
+            case 5:
+                progressStrength.value = 100;
+                strengthMessage.innerHTML = "is somewhat secure, but still could be improved. See stats for improvements.";
+                inputPass.style.borderColor = "#00ff00";
+                message.style.color = "#00ff00";
+                message.style.display = "block";
+                party()
+                break
+        }
+    }
+</script>
+
+{% endblock %}
