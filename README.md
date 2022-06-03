@@ -10,3 +10,7 @@ A registration and login system made with Django framework. Logic and functional
 * [canvas-confetti](https://www.npmjs.com/package/canvas-confetti) for Confetti effects
 
 # Additional Notes
+To run, navigate to project root directory and type:
+```
+python manage.py runserver
+```
