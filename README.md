@@ -12,6 +12,7 @@ A registration and login system made with Django framework. Logic and functional
 
 # Installing Necessary Libraries
 Make sure to install the following libraries to ensure the application functions as intended:
+
 Requests
 ```
 pip install requests
