@@ -11,7 +11,7 @@ A registration and login system made with Django framework, with a Passord Stren
 * [Brute Buster](https://github.com/mtrdesign/django-brutebuster) for Brute Force Protection
 
 # Installing Necessary Libraries
-Make sure to install the following libraries to ensure the application functions as intended:
+Make sure to install the following to ensure the application functions as intended:
 
 Requests
 ```
