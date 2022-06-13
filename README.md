@@ -1,8 +1,8 @@
 # Registration and Password Strength Checker
-A registration and login system made with Django framework. Logic and functionality mainly programmed with Python and JavaScript. Designed with HTML and CSS.
+A registration and login system made with Django framework, with a Passord Strength Checker. Logic and functionality mainly programmed with Python and JavaScript. Designed with HTML and CSS.
 
 # Requirements
-* Python 3.1
+* Python 3.9 and above
 
 # Libraries Used
 * [Sweet Alert](https://sweetalert.js.org/guides/) for alerts
