@@ -8,6 +8,7 @@ A registration and login system made with Django framework. Logic and functional
 * [Sweet Alert](https://sweetalert.js.org/guides/) for alerts
 * [zxcvbn](https://github.com/dropbox/zxcvbn) for password strength estimator
 * [canvas-confetti](https://www.npmjs.com/package/canvas-confetti) for Confetti effects
+* [Brute Buster](https://github.com/mtrdesign/django-brutebuster) for Brute Force Protection
 
 # Installing Necessary Libraries
 Make sure to install the following libraries to ensure the application functions as intended:
