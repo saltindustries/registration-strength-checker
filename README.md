@@ -9,6 +9,18 @@ A registration and login system made with Django framework. Logic and functional
 * [zxcvbn](https://github.com/dropbox/zxcvbn) for password strength estimator
 * [canvas-confetti](https://www.npmjs.com/package/canvas-confetti) for Confetti effects
 
+# Installing Necessary Libraries
+Make sure to install the following libraries to ensure the application functions as intended:
+Requests
+```
+pip install requests
+```
+
+Brute Buster
+```
+pip install django-brutebuster2
+```
+
 # Additional Notes
 To run, navigate to project root directory and type:
 ```
